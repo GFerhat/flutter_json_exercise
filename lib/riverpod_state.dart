@@ -9,4 +9,14 @@ class ToDoNotifier extends Notifier<ToDoList> {
     state.addTask(task);
     state = ToDoList(state.tasks);
   }
+
+  void toggle(int id) {
+    for (final task in state.tasks) {
+      if (task.id == id) {
+        task.toggle();
+        state = ToDoList(state.tasks);
+        return;
+      }
+    }
+  }
 }

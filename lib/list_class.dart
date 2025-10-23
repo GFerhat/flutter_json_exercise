@@ -2,9 +2,12 @@ class Task {
   bool isDone = false;
   String task;
 
+  static int idCounter = 0;
+  int id = idCounter++;
+
   Task({required this.task});
 
-  void toggle(bool isDone) {
+  void toggle() {
     isDone = !isDone;
   }
 }
