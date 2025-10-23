@@ -1,5 +1,5 @@
-import 'package:i12_into_012/list_class.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/list_class.dart';
 
 class ToDoNotifier extends Notifier<ToDoList> {
   @override
@@ -20,3 +20,7 @@ class ToDoNotifier extends Notifier<ToDoList> {
     }
   }
 }
+
+final toDoListProvider = NotifierProvider<ToDoNotifier, ToDoList>(
+  () => ToDoNotifier(),
+);

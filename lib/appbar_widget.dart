@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/riverpod_state.dart';
 
-class myAppBar extends StatelessWidget {
+class myAppBar extends ConsumerWidget {
   const myAppBar({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listProvider = ref.watch(toDoListProvider);
     return AppBar(
       backgroundColor: Colors.lightBlue,
       title: Row(
         children: [
           Expanded(child: Text("to Do List")),
-          Container(child: Text("0% finished")),
+          Container(
+            child: Text("${listProvider.tasksDoneInPercent()}% finished"),
+          ),
         ],
       ),
     );
