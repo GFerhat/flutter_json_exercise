@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/appbar_widget.dart';
-import 'package:i12_into_012/list_class.dart';
 import 'package:i12_into_012/list_widget.dart';
-import 'package:i12_into_012/riverpod_state.dart';
 
 class ListPage extends ConsumerWidget {
   const ListPage({super.key});

@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/list_class.dart';
-import 'package:i12_into_012/riverpod_state.dart';
+import 'package:i12_into_012/state/todo_notifier.dart';
 
 class todoList extends ConsumerWidget {
   todoList({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listProvider = ref.watch(toDoListProvider);
-    if (listProvider.tasks.length == 0) {
-      final newTask = Task(task: "learn coding today yeah!  ALPHA");
-      final newTask1 = Task(task: "learn coding today yeah!  ALPHA2");
-      final newTask2 = Task(task: "learn coding today yeah!  ALPHA3");
-      final newTask3 = Task(task: "learn coding today yeah!  ALPHA4");
-      ref.read(toDoListProvider).addTask(newTask);
-      ref.read(toDoListProvider).addTask(newTask1);
-      ref.read(toDoListProvider).addTask(newTask2);
-      ref.read(toDoListProvider).addTask(newTask3);
-    }
+    final todoList = ref.watch(refToDo);
     return ListView.builder(
-      itemCount: listProvider.tasks.length,
+      itemCount: todoList.tasks.length,
       itemBuilder: (BuildContext context, int index) {
         return ListTile(
           title: Container(
@@ -31,14 +20,14 @@ class todoList extends ConsumerWidget {
             child: Row(
               children: [
                 Checkbox(
-                  value: listProvider.tasks[index].isDone,
+                  value: todoList.tasks[index].isDone,
                   onChanged: (bool? x) {
                     ref
-                        .read(toDoListProvider.notifier)
-                        .toggle(listProvider.tasks[index].id);
+                        .read(refToDo.notifier)
+                        .toggle(todoList.tasks[index].id);
                   },
                 ),
-                Text("${listProvider.tasks[index].task}"),
+                Text("${todoList.tasks[index].task}"),
               ],
             ),
           ),

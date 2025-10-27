@@ -1,0 +1,16 @@
+{
+    "tasks": [
+        {
+            "isDone": false,
+            "task": "Buy groceries"
+        },
+        {
+            "isDone": true,
+            "task": "Buy more groceries"
+        },
+        {
+            "isDone": true,
+            "task": "Buy even more groceries"
+        }
+    ]
+}
