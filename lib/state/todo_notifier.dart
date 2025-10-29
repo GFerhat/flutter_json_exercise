@@ -59,5 +59,6 @@ class ToDoNotifier extends Notifier<ToDoList> {
     final tasks = [...state.tasks];
     final newTasks = tasks.where((task) => task.id != id).toList();
     state = state.copyWith(tasks: newTasks);
+    _saveState();
   }
 }
