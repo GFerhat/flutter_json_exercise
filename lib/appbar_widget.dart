@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/state/settings_page.dart';
 import 'package:i12_into_012/state/todo_notifier.dart';
 
 class myAppBar extends ConsumerWidget {
@@ -20,6 +21,18 @@ class myAppBar extends ConsumerWidget {
           ),
         ],
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<Widget>(
+                builder: (context) => const SettingsPage(),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
