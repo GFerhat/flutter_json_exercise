@@ -12,7 +12,6 @@ final refToDo = NotifierProvider<ToDoNotifier, ToDoList>(
 
 class ToDoNotifier extends Notifier<ToDoList> {
   String? _path;
-
   static const _fileName = 'state.json';
   ToDoNotifier() {
     getApplicationDocumentsDirectory().then((dir) async {
@@ -40,6 +39,7 @@ class ToDoNotifier extends Notifier<ToDoList> {
   void addTask(ToDo task) {
     state.addTask(task);
     state = ToDoList(state.tasks);
+    _saveState();
   }
 
   void toggle(int id) {
@@ -55,9 +55,9 @@ class ToDoNotifier extends Notifier<ToDoList> {
   }
 
   ///documentation
-  void removeTask(int id) {
+  void removeTask(ToDo task) {
     final tasks = [...state.tasks];
-    final newTasks = tasks.where((task) => task.id != id).toList();
+    final newTasks = tasks.where((t) => task.id != t.id).toList();
     state = state.copyWith(tasks: newTasks);
     _saveState();
   }

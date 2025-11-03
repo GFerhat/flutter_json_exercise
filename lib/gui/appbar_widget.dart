@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/state/settings_page.dart';
+import 'package:i12_into_012/gui/settings_page.dart';
 import 'package:i12_into_012/state/todo_notifier.dart';
 
 class myAppBar extends ConsumerWidget {

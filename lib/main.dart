@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/list_page.dart';
+import 'package:i12_into_012/gui/list_page.dart';
 import 'package:i12_into_012/state/settings_notfier.dart';
+import 'package:i12_into_012/trash/extension.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -20,10 +21,16 @@ class MyApp extends ConsumerWidget {
       title: 'todoJson',
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        extensions: [
+          getDarkListTileDeco(),
+        ],
       ),
       theme: ThemeData(
         brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0x00EFBCD5)),
+        extensions: [
+          getLightListTileDeco(),
+        ],
       ),
       themeMode: settingsState.isDarkmode ? ThemeMode.dark : ThemeMode.light,
       home: const ListPage(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/appbar_widget.dart';
-import 'package:i12_into_012/list_widget.dart';
-import 'package:i12_into_012/todo_dialog_widget.dart';
+import 'package:i12_into_012/gui/appbar_widget.dart';
+import 'package:i12_into_012/gui/list_widget.dart';
+import 'package:i12_into_012/gui/todo_dialog_widget.dart';
 
 class ListPage extends ConsumerWidget {
   const ListPage({super.key});

@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/trash/extension.dart';
 import 'package:i12_into_012/state/todo_notifier.dart';
 
 class todoList extends ConsumerWidget {
@@ -12,28 +13,44 @@ class todoList extends ConsumerWidget {
     return ListView.builder(
       itemCount: todoList.tasks.length,
       itemBuilder: (BuildContext context, int index) {
+        final task = todoList.tasks[index];
         return Dismissible(
-          key: ValueKey(todoList.tasks[index].id),
+          dismissThresholds: {DismissDirection.endToStart: 0.65},
+          key: ValueKey(task.id),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            ref.read(refToDo.notifier).removeTask(todoList.tasks[index].id);
+            ref.read(refToDo.notifier).removeTask(task);
           },
-          background: Container(
-            color: Colors.red,
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 24),
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
+          background: ListTile(
+            title: Container(
+              height: 49,
+              padding: EdgeInsets.all(3),
+              margin: EdgeInsets.all(3),
+              decoration:
+                  Theme.of(
+                        context,
+                      )
+                      .extension<ListTileContainerDecoration>()
+                      ?.decoration
+                      .copyWith(color: Colors.red),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
             ),
           ),
           child: ListTile(
             title: Container(
               padding: EdgeInsets.all(3),
               margin: EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-              ),
+              decoration: Theme.of(
+                context,
+              ).extension<ListTileContainerDecoration>()?.decoration,
               child: Row(
                 children: [
                   Checkbox(
