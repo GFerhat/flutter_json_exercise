@@ -26,7 +26,7 @@ class SettingsNotifier extends Notifier<Settings> {
       final json = jsonDecode(jsonString) as Map<String, dynamic>;
       state = Settings.fromJson(json);
     } else {
-      state = Settings(); // Standardwerte
+      state = const Settings(); // Standardwerte
     }
   }
 
