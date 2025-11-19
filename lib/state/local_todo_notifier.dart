@@ -1,5 +1,6 @@
-import 'dart:io';
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/state/todo.dart';
@@ -7,26 +8,28 @@ import 'package:i12_into_012/state/todo_list.dart';
 import 'package:path_provider/path_provider.dart';
 
 final refToDo = NotifierProvider<ToDoNotifier, ToDoList>(
-  () => ToDoNotifier(),
+  ToDoNotifier.new,
 );
 
 class ToDoNotifier extends Notifier<ToDoList> {
   String? _path;
   static const _fileName = 'state.json';
   ToDoNotifier() {
-    getApplicationDocumentsDirectory().then((dir) async {
-      _path = dir.path;
-      final file = File('$_path/$_fileName');
-      if (await file.exists()) {
-        final jsonString = await file.readAsString();
-        final json = jsonDecode(jsonString) as Map<String, dynamic>;
-        final newState = ToDoList.fromJson(json);
-        state = newState;
-      }
-    });
+    unawaited(
+      getApplicationDocumentsDirectory().then((dir) async {
+        _path = dir.path;
+        final file = File('$_path/$_fileName');
+        if (file.existsSync()) {
+          final jsonString = file.readAsStringSync();
+          final json = jsonDecode(jsonString) as Map<String, dynamic>;
+          final newState = ToDoList.fromJson(json);
+          state = newState;
+        }
+      }),
+    );
   }
 
-  void _saveState() async {
+  Future<void> _saveState() async {
     if (_path == null) return;
     final json = state.toJson();
     final file = File('$_path/$_fileName');
@@ -36,13 +39,13 @@ class ToDoNotifier extends Notifier<ToDoList> {
   @override
   ToDoList build() => ToDoList([]);
 
-  void addTask(ToDo task) {
+  Future<void> addTask(ToDo task) async {
     state.addTask(task);
     state = ToDoList(state.tasks);
-    _saveState();
+    await _saveState();
   }
 
-  void toggle(int id) {
+  Future<void> toggle(int id) async {
     final tasks = [...state.tasks];
     for (var i = 0; i < tasks.length; i++) {
       if (tasks[i].id == id) {
@@ -51,14 +54,14 @@ class ToDoNotifier extends Notifier<ToDoList> {
       }
     }
     state = state.copyWith(tasks: tasks);
-    _saveState();
+    await _saveState();
   }
 
   ///documentation
-  void removeTask(ToDo task) {
+  Future<void> removeTask(ToDo task) async {
     final tasks = [...state.tasks];
     final newTasks = tasks.where((t) => task.id != t.id).toList();
     state = state.copyWith(tasks: newTasks);
-    _saveState();
+    await _saveState();
   }
 }
