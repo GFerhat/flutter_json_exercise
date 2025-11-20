@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/trash/extension.dart';
-import 'package:i12_into_012/state/local_todo_notifier.dart';
+import 'package:i12_into_012/state/app_todo_notifier.dart';
 
 class todoList extends ConsumerWidget {
   todoList({super.key});
@@ -58,7 +58,7 @@ class todoList extends ConsumerWidget {
                     onChanged: (bool? x) {
                       ref
                           .read(refToDo.notifier)
-                          .toggle(todoList.tasks[index].id);
+                          .toggleDone(todoList.tasks[index].id);
                     },
                   ),
                   Text("${todoList.tasks[index].task}"),
