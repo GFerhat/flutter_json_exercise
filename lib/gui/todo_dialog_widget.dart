@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/state/todo.dart';
-import 'package:i12_into_012/state/app_todo_notifier.dart';
+import 'package:i12_into_012/state/json_todo_notifier.dart';
 
 class AddToDoDialog extends ConsumerWidget {
   const AddToDoDialog({

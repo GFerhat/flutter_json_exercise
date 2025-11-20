@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:i12_into_012/state/app_todo_notifier.dart';
+import 'package:i12_into_012/state/json_todo_notifier.dart';
 import 'package:i12_into_012/state/todo.dart';
 import 'package:i12_into_012/state/todo_list.dart';
 import 'package:path_provider/path_provider.dart';
