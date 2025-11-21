@@ -1,13 +1,19 @@
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:i12_into_012/state/todo.dart';
+part 'todo_list.freezed.dart';
+part 'todo_list.g.dart';
 
-class ToDoList {
-  final List<ToDo> tasks;
+@freezed
+abstract class ToDoList with _$ToDoList {
+  const factory ToDoList({
+    @Default([]) List<ToDo> tasks,
+  }) = _ToDoList;
 
-  ToDoList(this.tasks);
+  const ToDoList._();
 
-  void addTask(ToDo task) {
-    tasks.add(task);
-  }
+  factory ToDoList.fromJson(Map<String, Object?> json) =>
+      _$ToDoListFromJson(json);
 
   double get tasksDoneInPercent {
     int tasksDoneCounter = 0;
@@ -17,16 +23,4 @@ class ToDoList {
     }
     return 100 * tasksDoneCounter / tasks.length;
   }
-
-  Map<String, dynamic> toJson() => {
-    'tasks': tasks.map((e) => e.toJson()).toList(),
-  };
-
-  factory ToDoList.fromJson(Map<String, dynamic> json) => ToDoList(
-    (json['tasks'] as List)
-        .map((e) => ToDo.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-
-  ToDoList copyWith({List<ToDo>? tasks}) => ToDoList(tasks ?? this.tasks);
 }

@@ -1,24 +1,14 @@
-class ToDo {
-  final bool isDone;
-  final String task;
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'todo.freezed.dart';
+part 'todo.g.dart';
 
-  static int idCounter = 0;
-  final int id = idCounter++;
-
-  ToDo({required this.task, this.isDone = false});
-
-  Map<String, dynamic> toJson() => {
-    'isDone': isDone,
-    'task': task,
-  };
-
-  factory ToDo.fromJson(Map<String, dynamic> json) => ToDo(
-    task: json['task'] as String,
-    isDone: json['isDone'] as bool,
-  );
-
-  ToDo copyWith({bool? isDone, String? task}) => ToDo(
-    isDone: isDone ?? this.isDone,
-    task: task ?? this.task,
-  );
+@freezed
+abstract class ToDo with _$ToDo {
+  const factory ToDo({
+    required DateTime createdAt,
+    required String id,
+    @Default(false) bool isDone,
+    @Default('') String task,
+  }) = _ToDo;
+  factory ToDo.fromJson(Map<String, Object?> json) => _$ToDoFromJson(json);
 }

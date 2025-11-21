@@ -19,7 +19,7 @@ class SqfliteTodoNotifier extends ToDoNotifier {
   }
 
   @override
-  Future<bool> toggleDone(int id) {
+  Future<bool> toggleDone(String id) {
     throw UnimplementedError();
   }
 }

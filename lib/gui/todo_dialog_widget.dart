@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/state/todo.dart';
 import 'package:i12_into_012/state/json_todo_notifier.dart';
+import 'package:uuid/uuid.dart';
 
 class AddToDoDialog extends ConsumerWidget {
   const AddToDoDialog({
@@ -28,7 +29,15 @@ class AddToDoDialog extends ConsumerWidget {
               Navigator.of(context).pop();
               return;
             }
-            ref.read(refToDo.notifier).addTask(ToDo(task: inputText));
+            ref
+                .read(refToDo.notifier)
+                .addTask(
+                  ToDo(
+                    id: Uuid().v4(),
+                    task: inputText,
+                    createdAt: DateTime.now(),
+                  ),
+                );
             Navigator.of(context).pop();
           },
           child: const Text('SUBMIT'),

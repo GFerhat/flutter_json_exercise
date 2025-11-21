@@ -19,7 +19,14 @@ class LocalJsonNotifier extends ToDoNotifier {
           final jsonString = file.readAsStringSync();
           final json = jsonDecode(jsonString) as Map<String, dynamic>;
           final newState = ToDoList.fromJson(json);
-          state = newState;
+          final list = [...newState.tasks]
+            ..sort(
+              (a, b) => a.createdAt.millisecondsSinceEpoch.compareTo(
+                b.createdAt.millisecondsSinceEpoch,
+              ),
+            );
+
+          state = newState.copyWith(tasks: list);
         }
       }),
     );
@@ -33,30 +40,35 @@ class LocalJsonNotifier extends ToDoNotifier {
   }
 
   @override
-  ToDoList build() => ToDoList([]);
+  ToDoList build() => ToDoList();
 
+  @override
   Future<ToDoList> addTask(ToDo task) async {
-    state.addTask(task);
-    state = ToDoList(state.tasks);
+    final tempList = List<ToDo>.from([...state.tasks, task]);
+    state = state.copyWith(tasks: tempList);
     await _saveState();
     return state;
   }
 
   @override
-  Future<bool> toggleDone(int id) async {
+  Future<bool> toggleDone(String id) async {
     final tasks = [...state.tasks];
-    int i = 0;
-    for (i = 0; i < tasks.length; i++) {
-      if (tasks[i].id == id) {
-        tasks[i] = tasks[i].copyWith(isDone: !tasks[i].isDone);
-        break;
-      }
-    }
-    state = state.copyWith(tasks: tasks);
+    final task = tasks.where((element) => element.id == id).first;
+    final newTask = task.copyWith(isDone: !task.isDone);
+    final newTasks = tasks.where((t) => id != t.id).toList()
+      ..add(newTask)
+      ..sort(
+        (a, b) => a.createdAt.millisecondsSinceEpoch.compareTo(
+          b.createdAt.millisecondsSinceEpoch,
+        ),
+      );
+    state = state.copyWith(tasks: newTasks);
+
     await _saveState();
-    return tasks[i].isDone;
+    return tasks.where((element) => element.id == id).first.isDone;
   }
 
+  @override
   ///documentation
   Future<ToDoList> removeTask(ToDo task) async {
     final tasks = [...state.tasks];

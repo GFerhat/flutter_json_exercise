@@ -57,6 +57,7 @@ lib/
 
 #### Provider declarations (excerpt):
 
+
 ```dart
 // App state notifier provider
 final appStateProvider = StateNotifierProvider<AppStateNotifier, AppState>((ref) {
