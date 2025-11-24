@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/gui/settings_page.dart';
-import 'package:i12_into_012/state/json_todo_notifier.dart';
 
 class myAppBar extends ConsumerWidget {
   const myAppBar({
@@ -10,13 +9,12 @@ class myAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listProvider = ref.watch(refToDo);
     return AppBar(
       backgroundColor: Colors.lightBlue,
       title: Row(
         children: [
           const Expanded(child: Text('to Do List')),
-          Text('${listProvider.tasksDoneInPercent}% finished'),
+          // Text('${listProvider.tasksDoneInPercent}% finished'),
         ],
       ),
       actions: [

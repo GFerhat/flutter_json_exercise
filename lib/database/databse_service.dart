@@ -13,17 +13,18 @@ class DatabaseService {
 
   Future<Database> get database async {
     if (_db != null) return _db!;
-    _db = await getDatabase();
+    _db = await openTasksDatabase();
     return _db!;
   }
 
-  Future<Database> getDatabase() async {
+  Future<Database> openTasksDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'master_db.db');
     final database = await openDatabase(
       databasePath,
-      onCreate: (db, verion) {
-        db.execute('''
+      version: 1,
+      onCreate: (db, verion) async {
+        await db.execute('''
           $_tasksTableName (
             $_tasksIdColumnName INTEGER PRIMARY KEY,
             $_tasksContentColumn TEXT NOT NULL,

@@ -9,6 +9,8 @@ class ListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final DatabaseService _tasksDatabaseServiceSql = DatabaseService.isntance;
+
     final controller = TextEditingController();
 
     void openDialog() => showDialog<AlertDialog>(
@@ -21,7 +23,7 @@ class ListPage extends ConsumerWidget {
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: myAppBar(),
       ),
-      body: todoList(),
+      body: const TodoList(),
       bottomNavigationBar: BottomAppBar(
         child: IconButton(
           onPressed: openDialog,

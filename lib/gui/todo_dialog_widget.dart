@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/state/json_todo_notifier.dart';
+import 'package:i12_into_012/state/local_app_notifier.dart';
 import 'package:i12_into_012/state/todo.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,6 +14,15 @@ class AddToDoDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final todoListAsync = ref.watch(refJsonToDo);
+    if (todoListAsync is AsyncLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (todoListAsync is Error) {
+      return const Center(child: Text('Error'));
+    }
     return AlertDialog(
       title: const Text('Whats the task ?'),
       content: TextField(
@@ -23,17 +32,17 @@ class AddToDoDialog extends ConsumerWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             final inputText = _controller.text;
             if (inputText.isEmpty) {
               Navigator.of(context).pop();
               return;
             }
-            ref
-                .read(refToDo.notifier)
+            await ref
+                .read(refJsonToDo.notifier)
                 .addTask(
                   ToDo(
-                    id: Uuid().v4(),
+                    id: const Uuid().v4(),
                     task: inputText,
                     createdAt: DateTime.now(),
                   ),

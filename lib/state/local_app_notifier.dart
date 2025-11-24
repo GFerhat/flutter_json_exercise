@@ -1,80 +1,51 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:i12_into_012/state/json_todo_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/database/json_repo_provider.dart';
 import 'package:i12_into_012/state/todo.dart';
-import 'package:i12_into_012/state/todo_list.dart';
-import 'package:path_provider/path_provider.dart';
 
-class LocalJsonNotifier extends ToDoNotifier {
-  String? _path;
-  static const _fileName = 'state.json';
-  LocalJsonNotifier() {
-    unawaited(
-      getApplicationDocumentsDirectory().then((dir) async {
-        _path = dir.path;
-        final file = File('$_path/$_fileName');
-        if (file.existsSync()) {
-          final jsonString = file.readAsStringSync();
-          final json = jsonDecode(jsonString) as Map<String, dynamic>;
-          final newState = ToDoList.fromJson(json);
-          final list = [...newState.tasks]
-            ..sort(
-              (a, b) => a.createdAt.millisecondsSinceEpoch.compareTo(
-                b.createdAt.millisecondsSinceEpoch,
-              ),
-            );
+final refJsonToDo = AsyncNotifierProvider<LocalJsonNotifier, List<ToDo>>(() {
+  return LocalJsonNotifier();
+});
 
-          state = newState.copyWith(tasks: list);
-        }
-      }),
-    );
+class LocalJsonNotifier extends AsyncNotifier<List<ToDo>> {
+  @override
+  Future<List<ToDo>> build() async {
+    final todos = await ref.read(refRepoJson).getToDos();
+    return todos ?? [];
   }
 
-  Future<void> _saveState() async {
-    if (_path == null) return;
-    final json = state.toJson();
-    final file = File('$_path/$_fileName');
-    await file.writeAsString(jsonEncode(json));
+  Future<ToDo?> addTask(ToDo todo) async {
+    if (state.hasValue) {
+      await ref.read(refRepoJson).addToDo(todo);
+
+      final newState = List<ToDo>.from(state.value!)..add(todo);
+      state = AsyncValue.data(newState);
+      return todo;
+    }
+    return null;
   }
 
-  @override
-  ToDoList build() => ToDoList();
-
-  @override
-  Future<ToDoList> addTask(ToDo task) async {
-    final tempList = List<ToDo>.from([...state.tasks, task]);
-    state = state.copyWith(tasks: tempList);
-    await _saveState();
-    return state;
+  Future<ToDo?> toggleDone(String id) async {
+    if (state.hasValue) {
+      final oldToDo = state.value!.firstWhere((e) => e.id == id);
+      final newToDo = oldToDo.copyWith(isDone: !oldToDo.isDone);
+      final result = await ref.read(refRepoJson).updateToDo(newToDo);
+      final newState = List<ToDo>.from(state.value!)
+        ..removeWhere((e) => e.id == id)
+        ..add(result ?? oldToDo);
+      state = AsyncValue.data(newState);
+      return result;
+    }
+    return null;
   }
 
-  @override
-  Future<bool> toggleDone(String id) async {
-    final tasks = [...state.tasks];
-    final task = tasks.where((element) => element.id == id).first;
-    final newTask = task.copyWith(isDone: !task.isDone);
-    final newTasks = tasks.where((t) => id != t.id).toList()
-      ..add(newTask)
-      ..sort(
-        (a, b) => a.createdAt.millisecondsSinceEpoch.compareTo(
-          b.createdAt.millisecondsSinceEpoch,
-        ),
-      );
-    state = state.copyWith(tasks: newTasks);
-
-    await _saveState();
-    return tasks.where((element) => element.id == id).first.isDone;
-  }
-
-  @override
-  ///documentation
-  Future<ToDoList> removeTask(ToDo task) async {
-    final tasks = [...state.tasks];
-    final newTasks = tasks.where((t) => task.id != t.id).toList();
-    state = state.copyWith(tasks: newTasks);
-    await _saveState();
-    return state;
+  Future<ToDo?> removeTask(ToDo todo) async {
+    if (state.hasValue) {
+      final result = await ref.read(refRepoJson).removeToDo(todo);
+      state.value!.removeWhere((e) => e.id == todo.id);
+      return result;
+    }
+    return null;
   }
 }
