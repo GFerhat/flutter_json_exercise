@@ -15,17 +15,15 @@ class myAppBar extends ConsumerWidget {
       backgroundColor: Colors.lightBlue,
       title: Row(
         children: [
-          Expanded(child: Text('to Do List')),
-          Container(
-            child: Text('${listProvider.tasksDoneInPercent}% finished'),
-          ),
+          const Expanded(child: Text('to Do List')),
+          Text('${listProvider.tasksDoneInPercent}% finished'),
         ],
       ),
       actions: [
         IconButton(
           icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.of(context).push(
+          onPressed: () async {
+            await Navigator.of(context).push(
               MaterialPageRoute<Widget>(
                 builder: (context) => const SettingsPage(),
               ),

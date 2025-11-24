@@ -7,8 +7,9 @@ import 'package:i12_into_012/gui/todo_dialog_widget.dart';
 class ListPage extends ConsumerWidget {
   const ListPage({super.key});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController controller = TextEditingController();
+    final controller = TextEditingController();
 
     void openDialog() => showDialog<AlertDialog>(
       context: context,

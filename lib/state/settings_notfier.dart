@@ -6,7 +6,7 @@ import 'package:i12_into_012/state/settings.dart';
 import 'package:path_provider/path_provider.dart';
 
 final refSettings = NotifierProvider<SettingsNotifier, Settings>(
-  () => SettingsNotifier(),
+  SettingsNotifier.new,
 );
 
 class SettingsNotifier extends Notifier<Settings> {
@@ -37,9 +37,9 @@ class SettingsNotifier extends Notifier<Settings> {
     await file.writeAsString(jsonEncode(json));
   }
 
-  void toggleDarkmode() {
+  Future<void> toggleDarkmode() async {
     state = Settings(isDarkmode: !state.isDarkmode);
-    _saveSettings();
+    await _saveSettings();
   }
 
   @override

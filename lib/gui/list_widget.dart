@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:i12_into_012/trash/extension.dart';
 import 'package:i12_into_012/state/json_todo_notifier.dart';
+import 'package:i12_into_012/trash/extension.dart';
 
 class todoList extends ConsumerWidget {
-  todoList({super.key});
+  const todoList({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoList = ref.watch(refToDo);
@@ -15,17 +13,17 @@ class todoList extends ConsumerWidget {
       itemBuilder: (BuildContext context, int index) {
         final task = todoList.tasks[index];
         return Dismissible(
-          dismissThresholds: {DismissDirection.endToStart: 0.65},
+          dismissThresholds: const {DismissDirection.endToStart: 0.65},
           key: ValueKey(task.id),
           direction: DismissDirection.endToStart,
-          onDismissed: (direction) {
-            ref.read(refToDo.notifier).removeTask(task);
+          onDismissed: (direction) async {
+            await ref.read(refToDo.notifier).removeTask(task);
           },
           background: ListTile(
             title: Container(
               height: 49,
-              padding: EdgeInsets.all(3),
-              margin: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
+              margin: const EdgeInsets.all(3),
               decoration:
                   Theme.of(
                         context,
@@ -46,8 +44,8 @@ class todoList extends ConsumerWidget {
           ),
           child: ListTile(
             title: Container(
-              padding: EdgeInsets.all(3),
-              margin: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
+              margin: const EdgeInsets.all(3),
               decoration: Theme.of(
                 context,
               ).extension<ListTileContainerDecoration>()?.decoration,
@@ -55,13 +53,13 @@ class todoList extends ConsumerWidget {
                 children: [
                   Checkbox(
                     value: todoList.tasks[index].isDone,
-                    onChanged: (bool? x) {
-                      ref
+                    onChanged: (bool? x) async {
+                      await ref
                           .read(refToDo.notifier)
                           .toggleDone(todoList.tasks[index].id);
                     },
                   ),
-                  Text("${todoList.tasks[index].task}"),
+                  Text(todoList.tasks[index].task),
                 ],
               ),
             ),
