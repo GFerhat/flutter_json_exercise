@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/database/json_repo_provider.dart';
@@ -17,6 +18,7 @@ class LocalNotifier extends AsyncNotifier<List<ToDo>> {
   @override
   Future<List<ToDo>> build() async {
     final todos = await ref.read(repo).getToDos();
+    log('in build');
     return todos ?? [];
   }
 
@@ -52,13 +54,5 @@ class LocalNotifier extends AsyncNotifier<List<ToDo>> {
       return result;
     }
     return null;
-  }
-}
-
-class LocalSqflNotifier extends AsyncNotifier<List<ToDo>> {
-  @override
-  Future<List<ToDo>> build() async {
-    final todos = await ref.read(refRepoSqflite).getToDos();
-    return todos ?? [];
   }
 }

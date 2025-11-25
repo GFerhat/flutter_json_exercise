@@ -11,6 +11,7 @@ class TodoList extends ConsumerWidget {
     // final SqfliteRepo _tasksSqfliteRepoSql = SqfliteRepo.instance;
 
     final todoListAsync = ref.watch(refRepo);
+
     if (todoListAsync is AsyncLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -19,7 +20,6 @@ class TodoList extends ConsumerWidget {
     if (todoListAsync is Error) {
       return const Center(child: Text('Error'));
     }
-
     return Center(
       child: ListView.builder(
         itemCount: todoListAsync.value!.length,

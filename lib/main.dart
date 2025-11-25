@@ -3,8 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:i12_into_012/gui/list_page.dart';
 import 'package:i12_into_012/state/settings_notfier.dart';
 import 'package:i12_into_012/trash/extension.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize ffi for sqflite_common_ffi
+  sqfliteFfiInit();
+
+  // Set the databaseFactory to ffi version
+  databaseFactory = databaseFactoryFfi;
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -12,7 +20,6 @@ void main() {
 class MyApp extends ConsumerWidget {
   ///THIS IS THE MAIM APP
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsState = ref.watch(refSettings);

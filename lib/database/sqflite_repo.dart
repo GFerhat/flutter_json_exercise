@@ -4,9 +4,10 @@ import 'package:i12_into_012/database/repo.dart';
 import 'package:i12_into_012/state/todo.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class SqfliteRepo implements Repo {
-  static final SqfliteRepo instance = SqfliteRepo.instance;
+  static final SqfliteRepo instance = SqfliteRepo(); //.instance;
 
   static Database? _dbService;
 
@@ -24,11 +25,12 @@ class SqfliteRepo implements Repo {
 
   Future<Database> openTasksDatabase() async {
     final databaseDirPath = await getDatabasesPath();
+    log('openTaskDatabase');
     final databasePath = join(databaseDirPath, _dbFileName);
     final database = await openDatabase(
       databasePath,
       version: 1,
-      onCreate: (db, verion) async {
+      onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_tasksTableName (
             $_tasksIdColumnName TEXT PRIMARY KEY,
@@ -62,12 +64,16 @@ class SqfliteRepo implements Repo {
   @override
   Future<List<ToDo>?> getToDos() async {
     final List<ToDo> todos = [];
+    log('in der getToDO');
+
     final db = await database;
+    log('in der getToDO');
     final todoMaps = await db.query(_tasksTableName);
     for (final item in todoMaps) {
       final todo = ToDo.fromJson(item);
       todos.add(todo);
     }
+    log("getToDo Function");
     return todos;
   }
 
