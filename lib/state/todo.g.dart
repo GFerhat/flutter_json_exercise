@@ -9,7 +9,7 @@ part of 'todo.dart';
 _ToDo _$ToDoFromJson(Map<String, dynamic> json) => _ToDo(
   createdAt: DateTime.parse(json['createdAt'] as String),
   id: json['id'] as String,
-  isDone: json['isDone'] as bool? ?? false,
+  isDone: json['isDone'] == null ? false : _intToBool(json['isDone']),
   task: json['task'] as String? ?? '',
 );
 

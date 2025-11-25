@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:i12_into_012/database/sqflite_repo.dart';
 import 'package:i12_into_012/state/local_app_notifier.dart';
 import 'package:i12_into_012/trash/extension.dart';
 
@@ -7,7 +8,9 @@ class TodoList extends ConsumerWidget {
   const TodoList({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todoListAsync = ref.watch(refJsonToDo);
+    // final SqfliteRepo _tasksSqfliteRepoSql = SqfliteRepo.instance;
+
+    final todoListAsync = ref.watch(refRepo);
     if (todoListAsync is AsyncLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -27,7 +30,7 @@ class TodoList extends ConsumerWidget {
             key: ValueKey(task.id),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) async {
-              await ref.read(refJsonToDo.notifier).removeTask(task);
+              await ref.read(refRepo.notifier).removeTask(task);
             },
             background: ListTile(
               title: Container(
@@ -65,7 +68,7 @@ class TodoList extends ConsumerWidget {
                       value: todoListAsync.value![index].isDone,
                       onChanged: (bool? x) async {
                         await ref
-                            .read(refJsonToDo.notifier)
+                            .read(refRepo.notifier)
                             .toggleDone(todoListAsync.value![index].id);
                       },
                     ),

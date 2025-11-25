@@ -14,7 +14,7 @@ class AddToDoDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todoListAsync = ref.watch(refJsonToDo);
+    final todoListAsync = ref.watch(refRepo);
     if (todoListAsync is AsyncLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -39,7 +39,7 @@ class AddToDoDialog extends ConsumerWidget {
               return;
             }
             await ref
-                .read(refJsonToDo.notifier)
+                .read(refRepo.notifier)
                 .addTask(
                   ToDo(
                     id: const Uuid().v4(),

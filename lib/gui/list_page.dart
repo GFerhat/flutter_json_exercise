@@ -9,7 +9,6 @@ class ListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final DatabaseService _tasksDatabaseServiceSql = DatabaseService.isntance;
 
     final controller = TextEditingController();
 
