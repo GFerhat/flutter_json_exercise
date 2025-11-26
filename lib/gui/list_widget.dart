@@ -11,6 +11,7 @@ class TodoList extends ConsumerWidget {
     // final SqfliteRepo _tasksSqfliteRepoSql = SqfliteRepo.instance;
 
     final todoListAsync = ref.watch(refRepo);
+    print(todoListAsync.value);
 
     if (todoListAsync is AsyncLoading) {
       return const Center(

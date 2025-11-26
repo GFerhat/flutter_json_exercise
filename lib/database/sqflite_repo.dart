@@ -76,7 +76,7 @@ class SqfliteRepo implements Repo {
       final todo = ToDo.fromJson(item);
       todos.add(todo);
     }
-    log("getToDo Function");
+    log('getToDo Function');
     return todos;
   }
 

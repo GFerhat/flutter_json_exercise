@@ -18,41 +18,44 @@ class LocalNotifier extends AsyncNotifier<List<ToDo>> {
   @override
   Future<List<ToDo>> build() async {
     final todos = await ref.read(repo).getToDos();
-    log('in build');
     return todos ?? [];
   }
 
-  Future<ToDo?> addTask(ToDo todo) async {
+  Future<void> addTask(ToDo todo) async {
     if (state.hasValue) {
       await ref.read(repo).addToDo(todo);
 
       final newState = List<ToDo>.from(state.value!)..add(todo);
       state = AsyncValue.data(newState);
-      return todo;
     }
-    return null;
   }
 
-  Future<ToDo?> toggleDone(String id) async {
+  Future<void> toggleDone(String id) async {
     if (state.hasValue) {
       final oldToDo = state.value!.firstWhere((e) => e.id == id);
       final newToDo = oldToDo.copyWith(isDone: !oldToDo.isDone);
       final result = await ref.read(repo).updateToDo(newToDo);
-      final newState = List<ToDo>.from(state.value!)
-        ..removeWhere((e) => e.id == id)
-        ..add(result ?? oldToDo);
+      if (result == null) {
+        log('fehler beim speichern in db');
+        return;
+      }
+      final newState = state.value!
+          .map((e) => e.id == id ? result : e)
+          .toList();
       state = AsyncValue.data(newState);
-      return result;
     }
-    return null;
   }
 
-  Future<ToDo?> removeTask(ToDo todo) async {
+  Future<void> removeTask(ToDo todo) async {
     if (state.hasValue) {
       final result = await ref.read(repo).removeToDo(todo);
-      state.value!.removeWhere((e) => e.id == todo.id);
-      return result;
+      if (result == null) {
+        log('fehler beim löschen von eintrag');
+        return;
+      }
+      state = AsyncValue.data(
+        state.value!.where((e) => e.id != todo.id).toList(),
+      );
     }
-    return null;
   }
 }
