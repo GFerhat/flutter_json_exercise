@@ -11,10 +11,11 @@ class SqfliteRepo implements Repo {
 
   static Database? _dbService;
 
+  final String _taskCreatedAt = 'createdAt';
   final String _tasksTableName = 'todo';
   final String _tasksIdColumnName = 'id';
-  final String _tasksContentColumnName = 'content';
-  final String _tasksStatusColumnName = 'status';
+  final String _tasksContentColumnName = 'task';
+  final String _tasksStatusColumnName = 'isDone';
   final String _dbFileName = 'master_db.db';
 
   Future<Database> get database async {
@@ -33,6 +34,7 @@ class SqfliteRepo implements Repo {
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE $_tasksTableName (
+            $_taskCreatedAt TEXT NO NULL,
             $_tasksIdColumnName TEXT PRIMARY KEY,
             $_tasksContentColumnName TEXT NOT NULL,
             $_tasksStatusColumnName INTEGER NOT NULL
@@ -49,6 +51,7 @@ class SqfliteRepo implements Repo {
   ) async {
     try {
       final db = await database;
+      log('to json${todo.toJson()}');
       await db.insert(
         _tasksTableName,
         todo.toJson(),

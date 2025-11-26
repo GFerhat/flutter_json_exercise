@@ -16,6 +16,6 @@ _ToDo _$ToDoFromJson(Map<String, dynamic> json) => _ToDo(
 Map<String, dynamic> _$ToDoToJson(_ToDo instance) => <String, dynamic>{
   'createdAt': instance.createdAt.toIso8601String(),
   'id': instance.id,
-  'isDone': instance.isDone,
+  'isDone': _boolToInt(instance.isDone),
   'task': instance.task,
 };

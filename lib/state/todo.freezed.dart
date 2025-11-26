@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ToDo {
 
- DateTime get createdAt; String get id;@JsonKey(fromJson: _intToBool) bool get isDone; String get task;
+ DateTime get createdAt; String get id;@JsonKey(fromJson: _intToBool, toJson: _boolToInt) bool get isDone; String get task;
 /// Create a copy of ToDo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ToDoCopyWith<$Res>  {
   factory $ToDoCopyWith(ToDo value, $Res Function(ToDo) _then) = _$ToDoCopyWithImpl;
 @useResult
 $Res call({
- DateTime createdAt, String id,@JsonKey(fromJson: _intToBool) bool isDone, String task
+ DateTime createdAt, String id,@JsonKey(fromJson: _intToBool, toJson: _boolToInt) bool isDone, String task
 });
 
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool)  bool isDone,  String task)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool, toJson: _boolToInt)  bool isDone,  String task)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ToDo() when $default != null:
 return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
@@ -177,7 +177,7 @@ return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool)  bool isDone,  String task)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool, toJson: _boolToInt)  bool isDone,  String task)  $default,) {final _that = this;
 switch (_that) {
 case _ToDo():
 return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
@@ -197,7 +197,7 @@ return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool)  bool isDone,  String task)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime createdAt,  String id, @JsonKey(fromJson: _intToBool, toJson: _boolToInt)  bool isDone,  String task)?  $default,) {final _that = this;
 switch (_that) {
 case _ToDo() when $default != null:
 return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
@@ -212,12 +212,12 @@ return $default(_that.createdAt,_that.id,_that.isDone,_that.task);case _:
 @JsonSerializable()
 
 class _ToDo implements ToDo {
-  const _ToDo({required this.createdAt, required this.id, @JsonKey(fromJson: _intToBool) this.isDone = false, this.task = ''});
+  const _ToDo({required this.createdAt, required this.id, @JsonKey(fromJson: _intToBool, toJson: _boolToInt) this.isDone = false, this.task = ''});
   factory _ToDo.fromJson(Map<String, dynamic> json) => _$ToDoFromJson(json);
 
 @override final  DateTime createdAt;
 @override final  String id;
-@override@JsonKey(fromJson: _intToBool) final  bool isDone;
+@override@JsonKey(fromJson: _intToBool, toJson: _boolToInt) final  bool isDone;
 @override@JsonKey() final  String task;
 
 /// Create a copy of ToDo
@@ -253,7 +253,7 @@ abstract mixin class _$ToDoCopyWith<$Res> implements $ToDoCopyWith<$Res> {
   factory _$ToDoCopyWith(_ToDo value, $Res Function(_ToDo) _then) = __$ToDoCopyWithImpl;
 @override @useResult
 $Res call({
- DateTime createdAt, String id,@JsonKey(fromJson: _intToBool) bool isDone, String task
+ DateTime createdAt, String id,@JsonKey(fromJson: _intToBool, toJson: _boolToInt) bool isDone, String task
 });
 
 
